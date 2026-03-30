@@ -11,13 +11,13 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      # Step 1: Checkout code
+      # Step 1: Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Needed for full history
+          fetch-depth: 0
 
-      # Step 2: Set up Java
+      # Step 2: Set up Java (JDK 17)
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
@@ -25,14 +25,14 @@ jobs:
           java-version: 17
 
       # Step 3: Build project with Maven
+      # Change 'task01' below only if your pom.xml is inside a subfolder
       - name: Build with Maven
-        working-directory: ./task01  # <-- Ensure this points to the folder with pom.xml
+        working-directory: task01   # Remove or update this if pom.xml is in root
         run: mvn clean compile
 
-      # Optional: Run SonarQube analysis
+      # Step 4 (Optional): SonarQube scan
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v6
         with:
-          projectBaseDir: ./task01  # <-- Same folder as pom.xml
-          # token: ${{ secrets.SONAR_TOKEN }}  # uncomment and set in repo secrets
-
+          projectBaseDir: task01     # Same folder as pom.xml
+          # token: ${{ secrets.SONAR_TOKEN }}   # Uncomment if you have a token
